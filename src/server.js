@@ -85,13 +85,23 @@ const startServer = async () => {
   try {
     // await connectDB();
 
-    // listen for local development
-    if (ENV.NODE_ENV !== 'production') {
-      app.listen(ENV.PORT, () =>
-        console.log('Server is up and running on PORT:', ENV.PORT)
-      );
+    const PORT = ENV.PORT || 3000;
+
+    if (ENV.NODE_ENV === 'production') {
+      app.listen(PORT, '0.0.0.0', () => {
+        logger.info(`Production server is running on PORT: ${PORT}`);
+        console.log(`Production server is running on PORT: ${PORT}`);
+      });
+    } else {
+      app.listen(PORT, () => {
+        console.log(`Development server is up and running on PORT: ${PORT}`);
+      });
     }
   } catch (error) {
+    logger.error('Failed to start server:', {
+      error: error.message,
+      stack: error.stack,
+    });
     console.error('Failed to start server:', error.message);
     process.exit(1);
   }
