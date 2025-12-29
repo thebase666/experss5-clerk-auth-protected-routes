@@ -108,6 +108,3 @@ const startServer = async () => {
 };
 
 startServer();
-
-// export for vercel
-export default app;
